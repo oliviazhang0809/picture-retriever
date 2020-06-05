@@ -3,17 +3,53 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"strings"
+
+	"fmt"
 	"github.com/gorilla/sessions"
 	"github.com/jmoiron/sqlx"
 	"github.com/oliviazhang/picture-retriever/libhttp"
 	"github.com/oliviazhang/picture-retriever/models"
-	"net/http"
-	"strings"
 )
+
+type Categories struct {
+	Category []string `json:"dogs"`
+}
 
 type Record struct {
 	Category string `json:"category"`
 	URL      string `json:"url"`
+}
+
+// LoadPictures get random picture with category
+func LoadPictures(w http.ResponseWriter, r *http.Request) {
+	category := r.URL.Query().Get("category")
+	jsonFile, err := os.Open(fmt.Sprintf("%s.json", category))
+	if err != nil {
+		libhttp.HandleErrorJson(w, err)
+		return
+	}
+	defer jsonFile.Close()
+
+	var cates Categories
+
+	db := r.Context().Value("db").(*sqlx.DB)
+	imageFactory := models.NewImageFactory(db)
+
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+	json.Unmarshal(byteValue, &cates)
+	for i, cate := range cates.Category {
+		_, err := imageFactory.Save(nil, fmt.Sprintf("%s_%v", category, i), cate)
+		if err != nil {
+			libhttp.HandleErrorJson(w, err)
+			return
+		}
+	}
+
+	http.Redirect(w, r, "/", 302)
 }
 
 func SavePicture(w http.ResponseWriter, r *http.Request) {
@@ -36,7 +72,8 @@ func SavePicture(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Perform login
-	PostSave(w, r, input)
+	//NOTUSED_PostSave(w, r, input)
+	http.Redirect(w, r, "/", 302)
 }
 
 // GetPicture get random picture with category
@@ -56,7 +93,7 @@ func GetPicture(w http.ResponseWriter, r *http.Request) {
 }
 
 // PostLogin performs login.
-func PostSave(w http.ResponseWriter, r *http.Request, input Record) {
+func NOTUSED_PostSave(w http.ResponseWriter, r *http.Request, input Record) {
 	w.Header().Set("Content-Type", "text/html")
 
 	db := r.Context().Value("db").(*sqlx.DB)

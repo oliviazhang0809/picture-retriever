@@ -1,2 +1,15 @@
+*.out
+*.test
+*.xml
+*.swp
 .idea/
-.idea/workspace.xml
+.vscode/
+*.iml
+*.cov
+*.html
+.tmp/
+/texter-callbacks
+config/secrets.yaml
+.DS_Store
+.catalyst-build/
+logs/

@@ -3,9 +3,10 @@ package handlers
 
 import (
 	"errors"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 func getIdFromPath(w http.ResponseWriter, r *http.Request) (int64, error) {

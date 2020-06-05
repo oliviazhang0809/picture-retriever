@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/gob"
-	"fmt"
 	"github.com/Sirupsen/logrus"
 	"github.com/spf13/viper"
 	"github.com/tylerb/graceful"
@@ -22,7 +21,6 @@ func newConfig() (*viper.Viper, error) {
 	defaultDSN := strings.Replace("root:@tcp(localhost:3306)/picture-retriever?parseTime=true", "-", "_", -1)
 
 	c := viper.New()
-	fmt.Println("==== defaultDSN: ", defaultDSN)
 	c.SetDefault("dsn", defaultDSN)
 	c.SetDefault("cookie_secret", "PKUx8MRof9YDjI3A")
 	c.SetDefault("http_addr", ":8888")

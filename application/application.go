@@ -58,6 +58,7 @@ func (app *Application) mux() *gorilla_mux.Router {
 
 	router.Handle("/", http.HandlerFunc(handlers.GetHome)).Methods("GET")
 
+	router.HandleFunc("/load-pictures", handlers.LoadPictures).Methods("GET")
 	router.HandleFunc("/save", handlers.SavePicture).Methods("POST")
 	router.HandleFunc("/get", handlers.GetPicture).Methods("GET")
 	//router.HandleFunc("/login", handlers.PostLogin).Methods("POST")

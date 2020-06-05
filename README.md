@@ -11,12 +11,46 @@
     ./scripts/db-bootstrap
     ```
 
-4. Run the server
+4. (Optional) Run MySQL console
+    ```
+    brew services start mysql
+
+    mysqld --skip-grant-tables
+    mysql -u root -p;
+    show tables;
+    use picture_retriever;
+    select * from image_factory;
+    ```
+    
+    If not already created the image_factory table, create one:
+    ```
+    CREATE TABLE picture_retriever.image_factory 
+      ( 
+         id       INT(6) UNSIGNED auto_increment PRIMARY KEY, 
+         category VARCHAR(50) NOT NULL, 
+         url      VARCHAR(300) NOT NULL 
+      ); 
+    ```
+
+5. Run the server
     ```
     cd $GOPATH/src/github.com/oliviazhang/picture-retriever
     go run main.go
     ```
+6. Test with GET request
+    ```
+    curl -XGET 'localhost:8888/get?category=dog'
+    ```
 
+7. Test with SET request
+    ```
+    curl -X POST localhost:8888/save -d '{"category":"dog_1", "url":"https://images.pexels.com/photos/406014/pexels-photo-406014.jpeg"}'
+    ```
+    
+6. Test with Load pictures request
+    ```
+    curl -XGET 'localhost:8888/load-pictures?category=dogs'
+    ```
 
 ## Environment Variables for Configuration
 

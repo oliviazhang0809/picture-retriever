@@ -4,10 +4,11 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"github.com/jmoiron/sqlx"
-	"golang.org/x/crypto/bcrypt"
 	"math/rand"
 	"time"
+
+	"github.com/jmoiron/sqlx"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func NewImageFactory(db *sqlx.DB) *ImageFactory {
@@ -20,9 +21,9 @@ func NewImageFactory(db *sqlx.DB) *ImageFactory {
 }
 
 type ImageRow struct {
-	ID    int64  `db:"id"`
-	Email string `db:"category"`
-	URL   string `db:"url"`
+	ID       int64  `db:"id"`
+	Category string `db:"category"`
+	URL      string `db:"url"`
 }
 
 type ImageFactory struct {
@@ -106,14 +107,14 @@ func (u *ImageFactory) Save(tx *sqlx.Tx, category, url string) (*ImageRow, error
 		return nil, errors.New("URL cannot be blank.")
 	}
 
-	hashedURL, err := bcrypt.GenerateFromPassword([]byte(url), 5)
-	if err != nil {
-		return nil, err
-	}
+	//hashedURL, err := bcrypt.GenerateFromPassword([]byte(url), 5)
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	data := make(map[string]interface{})
 	data["category"] = category
-	data["url"] = hashedURL
+	data["url"] = url
 
 	sqlResult, err := u.InsertIntoTable(tx, data)
 	if err != nil {
