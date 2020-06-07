@@ -1,14 +1,14 @@
 package application
 
 import (
+	"net/http"
+
 	"github.com/carbocation/interpose"
 	_ "github.com/go-sql-driver/mysql"
 	gorilla_mux "github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"github.com/jmoiron/sqlx"
 	"github.com/spf13/viper"
-	"net/http"
-
 	"github.com/oliviazhang/picture-retriever/handlers"
 	"github.com/oliviazhang/picture-retriever/middlewares"
 )

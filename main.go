@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/gob"
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"github.com/tylerb/graceful"
 	"net/http"
